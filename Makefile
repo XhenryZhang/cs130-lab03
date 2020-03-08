@@ -3,6 +3,8 @@ CXX=g++
 AVL_BINARIES=avl.o avlClass.o
 BST_BINARIES=bst.o bstClass.o
 
+all: bst avl
+
 avl: ${AVL_BINARIES}
 	${CXX} $^ -o $@
 
