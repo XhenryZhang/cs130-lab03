@@ -3,10 +3,10 @@ CXX=g++
 AVL_BINARIES=avl.o avlClass.o
 BST_BINARIES=bst.o bstClass.o
 
-avl.out: ${AVL_BINARIES}
+avl: ${AVL_BINARIES}
 	${CXX} $^ -o $@
 
-bst.out: ${BST_BINARIES}
+bst: ${BST_BINARIES}
 	${CXX} $^ -o $@
 
 avl.o: avl.cpp
