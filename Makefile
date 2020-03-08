@@ -22,4 +22,4 @@ bstClass.o: bstClass.cpp
 	${CXX} $^ -c
 
 clean:
-	rm -rf *.o avl.out bst.out
+	rm -rf *.o avl bst
