@@ -1,6 +1,8 @@
 #ifndef BST_CLASS
 #define BST_CLASS
 
+#include <string>
+
 class Bst {
 public:
     // constructors
@@ -27,15 +29,17 @@ private:
     void clear(Node *n); // recursive helper for destructor
     Node* getNode(int value, Node* n) const; // return node corresponding to value
     std::string insert(int i, Node* n); // helper method for insert
+    std::string deleteElem(Node* n);
 
     // printing
-    void printPreOrder(Node* n) const;
-    void printInOrder(Node* n) const;
-    void printPostOrder(Node* n) const;
+    std::string printPreOrder(Node* n) const;
+    std::string printInOrder(Node* n) const;
+    std::string printPostOrder(Node* n) const;
 
-    // succ and pred for delete
-    Node* getPredecessorNode(Node* n) const;
+    // succ for delete
     Node* getSuccessorNode(Node* n) const;
     
     Node* root;
 };
+
+#endif

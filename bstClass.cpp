@@ -19,12 +19,28 @@ std::string Bst::access(int i) const{
     Node* elem = getNode(i, root);
 
     if (elem == 0) {
-        return "Element accessed";
-    }else {
         return "Element not found";
+    }else {
+        return "Element accessed";
     }
 }
 
+// print
+void Bst::printTree() const {
+    if (root == 0) {
+        std::cout << "Empty tree" << std::endl;
+        return;
+    }
+
+    std::cout << printPreOrder(root);
+    std::cout << std::endl;
+    std::cout << printInOrder(root);
+    std::cout << std::endl;
+    std::cout << printPostOrder(root);
+    std::cout << std::endl;
+}
+
+// insert element
 std::string Bst::insert(int i) {
     std::string output = "";
     if (root == 0) {
@@ -36,6 +52,7 @@ std::string Bst::insert(int i) {
     return insert(i, root);
 }
 
+// delete element
 std::string Bst::deleteElem(int i) {
     return deleteElem(getNode(i, root));
 }
@@ -68,6 +85,7 @@ std::string Bst::deleteElem(Node* n) {
                 }else { // if n is parent's left subtree, paren'ts new left subtree is n's left subtree
                     n->parent->left = n->left; 
                 }
+
                 n->left->parent = n->parent; // either way, n's left subtree's parent becomes n's parent
                 delete n;
             }
@@ -83,9 +101,9 @@ std::string Bst::deleteElem(Node* n) {
                 }else {
                     n->parent->left = n->right; 
                 }
-                    n->right->parent = n->parent;
-                    delete n;
-                }
+
+                n->right->parent = n->parent;
+                delete n;
             }
 
         }else { // Case #4: node has 2 children
@@ -142,7 +160,7 @@ void Bst::clear(Node *n) {
     }
 }
 
-Node* Bst::getNode(int value, Node* n) const{
+Bst::Node* Bst::getNode(int value, Node* n) const{
     if (n == 0) {
         return 0;
     }else if (value == n->value) {
@@ -154,28 +172,7 @@ Node* Bst::getNode(int value, Node* n) const{
     }
 }
 
-Node* Bst::getPredecessorNode(Node* n) const{
-    if (n->left) { // find maximum of left subtree
-        n = n->left;
-        while (n->right) {
-            n = n->right;
-        }
-    }else { // traverse up tree until node with value less than target is found
-        while (n->parent && n->parent->value > n->value) {
-            n = n->parent;
-        }
-
-        if (n->parent) {
-            n = n->parent;
-        }else {
-            n = 0;
-        }
-    }
-
-    return n;
-}
-
-Node* Bst::getSuccessorNode(Node* n) const{
+Bst::Node* Bst::getSuccessorNode(Node* n) const{
     if (n->right) { // find minimum of right subtree
         n = n->right;
         while (n->left) {
@@ -192,87 +189,105 @@ Node* Bst::getSuccessorNode(Node* n) const{
             n = 0;
         }
     }
-}
 
-void Bst::printInOrder(Node* n) const {
+    return n;
+}
+// print in order
+std::string Bst::printInOrder(Node* n) const {
+    std::string output = "";
+
     if (n == 0) {
-        return;
+        return "";
     }
     
-    std::stack<Node*> bstStack;
+    std::stack<Node*> BstStack;
 
-    while(!(n == 0 && bstStack.empty())) {
+    while(!(n == 0 && BstStack.empty())) {
         // left subtree
         if (n != 0) {
-            bstStack.push(n);
+            BstStack.push(n);
             n = n->left;
         }else {
-            n = bstStack.pop();
+            n = BstStack.top();
+            BstStack.pop();
+
             int value = n->value; // prints root node
-            std::cout << value << " ";
+            // std::cout << value << " ";
+            output = output + std::to_string(value) + " ";
             n = n->right;
         }
-        // node
-
-        // right subtree
     }
+
+    output = output.substr(0, output.length() - 1);
+    return output;
 }
 
-void Bst::printPreOrder(Node* n) const {
+std::string Bst::printPreOrder(Node* n) const {
+    std::string output = "";
+
     if (n == 0) {
-        return;
+        return output;
     }
     
-    std::stack<Node*> bstStack;
-    bstStack.push(n);
-    while(!bstStack.empty()) {
+    std::stack<Node*> BstStack;
+    BstStack.push(n);
+    while(!BstStack.empty()) {
         // print root node add right child, add left child
-        n = bstStack.pop();
-        int value = n->value;
-        std::cout << value << " ";
+        n = BstStack.top();
+        BstStack.pop();
 
+        int value = n->value;
+        output = output + std::to_string(value) + " ";
+    
         // add right child to stack
         if (n->right) {
-            bstStack.push(n->right);
+            BstStack.push(n->right);
         }
         
         // add left child to stack
         if (n->left) {
-            bstStack.push(n->left);
+            BstStack.push(n->left);
         }
     }
+
+    output = output.substr(0, output.length() - 1);
+    return output;
 }
 
-void Bst::printPostOrder(Node* n) const {
+std::string Bst::printPostOrder(Node* n) const{
+    std::string output = "";
     if (n == 0) {
-        return;
+        return output;
     }
     
-    std::stack<Node*> bstStack;
+    std::stack<Node*> BstStack;
 
-    while(!bstStack.empty()) {
+    do {
         // add right child, add left child
         while (n) {
             if (n->right) {
-                bstStack.push(n->right);
+                BstStack.push(n->right);
             }
-            bstStack.push(n);
+            BstStack.push(n);
 
             n = n->left;
         }
 
         // if on right subtree continuous, go back up
-        n = bstStack.pop();
+        n = BstStack.top();
+        BstStack.pop();
 
         // if popped has a right child and its next on stack
-        if (n->right && bstStack.top() == n->right) {
-            bstStack.pop(); // pop right child
-            bstStack.push(n); // push n back on stack
+        if (!BstStack.empty() && n->right && BstStack.top() == n->right) {
+            BstStack.pop(); // pop right child
+            BstStack.push(n); // push n back on stack
             n = n->right; // set n to right child
         }else {
-            std::cout << n->value << " ";
+            output = output + std::to_string(n->value) + " ";
             n = 0;
         }
-    }
-}
+    } while (!BstStack.empty());
 
+    output = output.substr(0, output.length() - 1);
+    return output;
+}
