@@ -12,6 +12,7 @@ public:
     // member functions
     std::string insert(int i); // add to tree
     void printTree() const; // prints tree in 3 traversal types
+    void printBfs() const;
     std::string deleteElem(int i); // delete i from tree
     std::string access(int i) const; // find i in tree, calls getNode
 
@@ -35,6 +36,8 @@ private:
     std::string printPreOrder(Node* n) const;
     std::string printInOrder(Node* n) const;
     std::string printPostOrder(Node* n) const;
+    std::string bfsHelper(Node* n) const;
+    
 
     // succ for delete
     Node* getSuccessorNode(Node* n) const;

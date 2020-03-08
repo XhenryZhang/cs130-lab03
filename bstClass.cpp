@@ -6,6 +6,7 @@
 #include <iostream>
 #include <string>
 #include <stack>
+#include <queue>
 
 // constructors
 Bst::Bst() : root(0) {}
@@ -38,6 +39,43 @@ void Bst::printTree() const {
     std::cout << std::endl;
     std::cout << printPostOrder(root);
     std::cout << std::endl;
+}
+
+void Bst::printBfs() const {
+    if (root == 0) {
+        std::cout << "Empty tree" << std::endl;
+        return;
+    }
+
+    std::cout << bfsHelper(root);
+    std::cout << std::endl;
+}
+
+// bfs helper
+std::string Bst::bfsHelper(Node* n) const {
+    std::string output = "";
+    std::queue<Node*> visited;
+    visited.push(n);
+
+    while(!visited.empty()) {
+        Node* current = visited.front();
+        int value = current->value;
+        
+        output = output + std::to_string(value) + " ";
+        
+        if (current->left != 0) {
+            visited.push(current->left);
+        }
+
+        if (current->right != 0) {
+            visited.push(current->right);
+        }
+
+        visited.pop();
+    }
+
+    output = output.substr(0, output.length() - 1);
+    return output;
 }
 
 // insert element
@@ -192,6 +230,7 @@ Bst::Node* Bst::getSuccessorNode(Node* n) const{
 
     return n;
 }
+
 // print in order
 std::string Bst::printInOrder(Node* n) const {
     std::string output = "";

@@ -37,6 +37,8 @@ int main(int argc, char* argv[]) {
             // execute command
             if (arr[0] == "insert") {
                 std::cout << myAvl->insert(std::stoi(arr[1])) << std::endl;
+            }else if (arr[0] == "print" && arr[1] == "bfs") {
+                myAvl->printBfs();
             }else if (arr[0] == "print") {
                 myAvl->printTree();
             }else if (arr[0] == "access") {
@@ -46,6 +48,8 @@ int main(int argc, char* argv[]) {
             }
 
             command = "";
+            arr[0] = "";
+            arr[1] = "";
         }
 
     }
